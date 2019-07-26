@@ -9,18 +9,23 @@ import com.github.ipan97.repository.PostRepository
 import com.github.ipan97.router.api
 import io.ktor.application.Application
 import io.ktor.application.install
-import io.ktor.auth.Authentication
 import io.ktor.features.ContentNegotiation
 import io.ktor.jackson.jackson
 import io.ktor.routing.Routing
+import io.ktor.server.engine.commandLineEnvironment
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import io.ktor.thymeleaf.Thymeleaf
+import org.koin.ktor.ext.Koin
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
-@Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
-fun Application.module(testing: Boolean = false) {
+fun Application.module() {
+
+    install(Koin) {
+        modules(koinModule)
+    }
+
     install(Thymeleaf) {
         setTemplateResolver(ClassLoaderTemplateResolver().apply {
             prefix = "templates/thymeleaf/"
@@ -28,10 +33,6 @@ fun Application.module(testing: Boolean = false) {
             characterEncoding = "utf-8"
         })
     }
-
-    install(Authentication) {
-    }
-
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
@@ -50,5 +51,10 @@ fun Application.module(testing: Boolean = false) {
     install(Routing) {
         api(postRepository)
     }
+}
+
+fun main(args: Array<String>) {
+    embeddedServer(Netty, commandLineEnvironment(args))
+        .start(wait = true)
 }
 

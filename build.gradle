@@ -1,5 +1,6 @@
 buildscript {
 
+    ext.koin_version = '2.0.1'
     ext.jackson_version = '2.9.8'
 
     repositories {
@@ -32,6 +33,12 @@ repositories {
     maven { url 'https://kotlin.bintray.com/kotlinx' }
 }
 
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "io.ktor:ktor-server-netty:$ktor_version"
@@ -50,7 +57,9 @@ dependencies {
     compile "io.ktor:ktor-client-gson:$ktor_version"
     compile "io.ktor:ktor-client-logging-jvm:$ktor_version"
     compile 'org.jetbrains.exposed:exposed:0.16.1'
-    compile 'org.koin:koin-ktor:2.0.1'
+
+    // Koin
+    compile "org.koin:koin-ktor:$koin_version"
     compile 'org.postgresql:postgresql:42.2.6'
     compile 'com.zaxxer:HikariCP:3.3.1'
     testCompile 'org.koin:koin-test:2.0.1'
