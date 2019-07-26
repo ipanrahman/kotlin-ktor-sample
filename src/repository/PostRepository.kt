@@ -1,6 +1,5 @@
 package com.github.ipan97.repository
 
-import com.github.ipan97.config.DatabaseConfig
 import com.github.ipan97.database.schema.Posts
 import com.github.ipan97.domain.Post
 import org.jetbrains.exposed.sql.ResultRow
@@ -15,7 +14,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class PostRepository {
 
     init {
-        DatabaseConfig.init()
         transaction {
             SchemaUtils.create(Posts)
         }

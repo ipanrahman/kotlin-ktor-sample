@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.github.ipan97.repository.PostRepository
+import com.github.ipan97.config.DatabaseConfig
 import com.github.ipan97.router.api
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -16,10 +16,12 @@ import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.thymeleaf.Thymeleaf
+import io.ktor.util.KtorExperimentalAPI
 import org.koin.ktor.ext.Koin
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 
 
+@KtorExperimentalAPI
 fun Application.module() {
 
     install(Koin) {
@@ -46,10 +48,10 @@ fun Application.module() {
         }
     }
 
-    val postRepository = PostRepository()
+    DatabaseConfig.init()
 
     install(Routing) {
-        api(postRepository)
+        api()
     }
 }
 

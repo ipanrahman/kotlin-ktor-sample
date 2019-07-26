@@ -10,8 +10,6 @@ import org.jetbrains.exposed.sql.Database
 /**
  * @author Ipan Taufik Rahman
  */
-
-
 object DatabaseConfig {
 
     @KtorExperimentalAPI
@@ -32,6 +30,7 @@ object DatabaseConfig {
         return HikariDataSource(config)
     }
 
+    @KtorExperimentalAPI
     fun init() {
         Database.connect(hikariDatasource())
     }
